@@ -1,0 +1,92 @@
+---
+title: "Assignment_3"
+author: "Matthew Smith"
+format: html
+editor: visual
+output-file: "index.html"
+---
+
+## Problem 1:
+
+```{r}
+#| warning: false
+library(ggplot2)
+library(dplyr)
+df<-read.csv(file="timesData.csv",header=T)
+attach(df)
+knitr::kable(head(df, 10))
+```
+
+## Problem 2:
+
+```{r}
+#grepl("University of California, Los Angeles", df$university_name)
+
+
+UCLA_Rank <- df[grepl("University of California, Los Angeles", university_name, ignore.case = TRUE),] |>
+  select(world_rank, university_name, year) |>
+  mutate(world_rank = as.numeric(world_rank))
+  
+UCLA_Rank
+```
+
+## Problem 3:
+
+```{r}
+ggplot(UCLA_Rank, aes(x=year,y=world_rank)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "UCLA Ranking from 2011-2016" , x = "Year", y="Ranking")
+```
+
+## Problem 4:
+
+```{r}
+UCBerk_Rank <- df[grepl("University of California, Berkeley", university_name, ignore.case = TRUE),] |>
+  select(world_rank, university_name, year) |>
+  mutate(world_rank = as.numeric(world_rank))
+  
+ggplot(UCBerk_Rank, aes(x=year,y=world_rank)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "UC Berkeley Ranking from 2011-2016" , x = "Year", y="Ranking")
+```
+
+## Comparison of UCLA and UC Berkeley
+
+```{r}
+#| layout-ncol: 2
+ggplot(UCLA_Rank, aes(x=year,y=world_rank)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "UCLA Ranking from 2011-2016" , x = "Year", y="Ranking")
+ggplot(UCBerk_Rank, aes(x=year,y=world_rank)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "UC Berkeley Ranking from 2011-2016" , x = "Year", y="Ranking")
+```
+
+## Problem 5:
+
+```{r}
+#| warning: false
+USA_Rank<-df |>
+  mutate(world_rank = as.numeric(gsub("=", "", world_rank))) |>
+  select(world_rank, university_name, country,  year) |>
+  filter(country == "United States of America", world_rank <= 50) |>
+  distinct(year, university_name) |>
+  count(year)
+USA_Rank
+
+summary(USA_Rank$n)
+
+IQR <- 29.75 - 27.25
+
+L_Fence <- 29.75 - 1.5 * IQR
+U_Fence <- 27.25 + 1.5 * IQR
+
+USA_Rank |>
+  filter(n < L_Fence | n > U_Fence)
+```
+
+Since there seems to be no outliers, we can conclude that the number of US Universities in the top 50 have not changed much over the years.
