@@ -1,0 +1,119 @@
+---
+title: "Assignment_4"
+author: "Matthew Smith"
+format: html
+editor: visual
+output-file: "index.html"
+---
+
+## Problem 1A:
+
+```{r}
+#| warning: false
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(reactable)
+library(plotly)
+library(crosstalk)
+df<-read.csv("https://manctsui.github.io/datasets/timesData.csv")
+#knitr::kable(head(df, 10))
+
+###Problem 1A###
+
+Top_Three <- df |>
+  count(country) |>
+  arrange(desc(n)) |>
+  slice_head(n=3)
+  
+reactable(Top_Three,
+    columns = list(
+      country = colDef(name = "Country"), 
+      n = colDef(name = "Number of Universities in Ranking")
+      )
+    )
+```
+
+## Problem 1B:
+
+```{r}
+plot_ly(Top_Three, 
+        x=~country, 
+        y=~n, 
+        type = "bar") %>%
+  layout(title = "Top Three Countries", 
+         xaxis = list(title = "Country"), 
+         yaxis = list(title = "Number of Universities")
+         )
+```
+
+## Problem 2A
+
+```{r}
+Top_50 <-df |>
+  filter(year == 2011) |>
+  mutate(world_rank = as.numeric(world_rank)) |>
+  select(world_rank,university_name) |>
+  slice_head(n = 50)
+
+reactable(Top_50,
+          columns = list(
+          university_name = colDef(name = "University Name"), 
+          world_rank = colDef(name = "Global Ranking")
+      )
+    )
+```
+
+## Problem 2B
+
+If were were to take the data frame from problem 1A, rank would not be a good choice for a key. In problem 1A there are only two columns, "country" and "Number of Universities in Ranking", so rank isn't even a column to consider. Additionaly, even if rank were in this data frame it would not make a good key because there are ties in the ranking. A good key has unique values in each row.
+
+## Problem 2C
+
+```{r}
+sd <- SharedData$new(Top_50, key = ~university_name)
+
+filter_slider("rank","Global Rank",sd,~world_rank)
+reactable(sd,
+          columns = list(
+          university_name = colDef(name = "University Name"), 
+          world_rank = colDef(name = "Global Ranking")
+      )
+)
+```
+
+## Problem 3
+
+```{r}
+p3 <- df |>
+  filter(year == 2016) |>
+  drop_na(num_students) |>
+  mutate(num_students = as.numeric(gsub(",", "", num_students))) |>
+  select(student_staff_ratio, num_students, teaching)
+
+sp3 <- SharedData$new(p3)
+plot_1<-plot_ly(sp3, 
+        x=~num_students, 
+        y=~student_staff_ratio, 
+        type = "scatter",
+        mode = "markers") %>%
+  layout(title = "Number of Students vs. Student-Staff Ratio", 
+         xaxis = list(title = "Number of Students"), 
+         yaxis = list(title = "Student-Staff Ratio")
+         )
+
+plot_2<-plot_ly(sp3, 
+        x=~student_staff_ratio, 
+        y=~teaching, 
+        type = "scatter",
+        mode = "markers") %>%
+  layout(title = "Student-Staff Ratio vs. Teaching Score", 
+         xaxis = list(title = "Student-Staff Ratio"), 
+         yaxis = list(title = "Teaching Score")
+         )
+
+bscols(
+  plot_1,
+  plot_2
+)
+```
