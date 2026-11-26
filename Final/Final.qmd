@@ -1,0 +1,216 @@
+---
+title: "Final Project: Broadway Shows"
+author: "Matthew Smith"
+format: html
+editor: visual
+---
+
+# Statistical Observations on Broadway Shows (1990-2016).
+
+For this project, I wanted to analyze and dispaly the success of Broadway shows over the course of 2.5 decades. Specifically I wanted to look at two things:
+
+-   if show type—straight plays or musicals—had an effect on income and/or attendance in a show's opening week; and
+
+-   how shows performed on average over the years.
+
+The original data set—*Broadway CSV File* by Austin Cory Bar—contains information on a Broadway show at the end of each week, such as show type, gross income, attendance, number of performances and capacity.
+
+```{r}
+#| warning: false
+#| include: false
+library(ggplot2)
+library(plotly)
+library(knitr)
+library(dplyr)
+library(car)
+library(ggplot2)
+broadway<-read.csv(file="broadway_upd.csv",header = TRUE)
+attach(broadway)
+
+broadway$Date.Full <- as.Date(broadway$Date.Full, format = "%m/%d/%Y")
+knitr::kable(head(broadway, 10))
+
+str(broadway)
+```
+
+```{r}
+broadway_opening <- broadway |>
+  select(Date.Full, Show.Name, Show.Type, Statistics.Attendance, Statistics.Gross, Statistics.Performances, Theater.Seating.Capacity) |>
+  filter(Show.Type != "Special") |>
+  arrange(Date.Full) |>
+  distinct(Show.Name, .keep_all=TRUE)|>
+  mutate(Show.Type.N=if_else(Show.Type == "Play",1,0))
+
+knitr::kable(head(broadway_opening, 10))
+```
+
+To analyze the differences between plays and musicals, I created a sub-data frame entitled *"broadway_opening"* which looked only at a shows first week. The idea behind this was to see if show type had any impact on performance statistics based on "first impressions". I also created a new column "Show.Type.N" that codes Plays = 1 & Musicals = 0 to do later analysis.
+
+```{r}
+broadway_opening |>
+  group_by(Show.Type) |>
+  summarise(
+    mean.attendance = mean(Statistics.Attendance, na.rm = TRUE),
+    mean.gross = mean(Statistics.Gross, na.rm = TRUE)
+    )
+
+p1<-plot_ly(data=broadway_opening,
+        x = ~Statistics.Gross, 
+        y = ~Show.Type, 
+        type="box", 
+        color = ~Show.Type)
+         
+p2<-plot_ly(data=broadway_opening,
+        x = ~Statistics.Attendance, 
+        y = ~Show.Type, 
+        type="box", 
+        color = ~Show.Type,
+        showlegend = FALSE)
+
+subplot(p1, p2, nrows=1, shareY = TRUE) |>
+    layout(title = "Broadway Shows: Income and Attendance",
+         xaxis = list(title="Gross Income ($)"),
+         xaxis2 = list(title="Attendance"),
+         yaxis = list(title="Show Type"))
+```
+
+Using this new data set, I created two box-plots. From this, we can see that on average, musicals perform better than plays in regards to both gross income and attendance. Specifically, musical mean-attendance and mean gross-income is 52.32% and 63.62% greater than plays respectively.
+
+It's interesting to note, that plays typically have less deviation from their average than musicals do, as shown by the narrower boxes (or interquartile-ranges) of the plays in both graphs. Indicating that musicals are more volatile to other factors possibly like ticket price, genre, and composer.
+
+With these differences in mind, I next wanted to see if show type could predict the success of a show.
+
+```{r}
+model1 <- lm(Statistics.Attendance~Show.Type.N,data = broadway_opening)
+summary(model1)
+
+model2 <-lm(Statistics.Gross~Show.Type.N,data = broadway_opening)
+summary(model2)
+```
+
+To do this, I created two linear models with *"Show.Type.N"* as a predictor for both gross income and attendance.
+
+The first model estimates that average attendance of a Broadway play is going to have 1816.4 visitors fewer than a Broadway musical during opening week. With a p-value below 0.01, the difference is statistically significant, indicating association between attendance and show type.
+
+The second model estimates that average gross income of a Broadway play is \$126,234 than that of a musical—estimated at \$324,644 during opening week. Similarly, the significant p-value provides evidence of an association between show type and gross income.
+
+However, while there may be statistically significant evidence to support association between show type and the two response variables, the models have poor explanatory power. Model 1 has an R^2^ value of 0.1272, meaning the model only explains 12.72% of the variation in attendance. Model 2 has an even lower R^2^ value, 0.08829, explaining only 8.829% of the variation in gross income. With low R-squared values, there is most likely another—or multiple other—variables that contribute to a shows success.
+
+```{r}
+model3 <- lm(Statistics.Attendance~Show.Type.N + Theater.Seating.Capacity + Statistics.Performances,data = broadway_opening)
+summary(model3)
+
+model4 <-lm(Statistics.Gross~Show.Type.N + Theater.Seating.Capacity + Statistics.Performances,data = broadway_opening)
+summary(model4)
+
+```
+
+Since show type alone is not a strong predictor of attendance nor gross income, I then wanted to see if adding some other variables from the data set would improve the predicting power of the models. Specifically I used the theaters seating capacity as well as the number of performances during opening week.
+
+Interestingly, adding these other predictors increases the p-value of *"Show.Type"*, so much so, that at the 0.01 significance level, there is no longer sufficient evidence to support an association between show type and both response variables.
+
+It's also worth noting that at the 0.01 significance level, there does not exist sufficient evidence to support association between the number of performances and gross income.
+
+Once again, the R-squared—in this case, multiple R-squared—for both models is relatively low at 0.3234 and 0.2162 respectively.
+
+I next wanted to see whether the regression models satisfied the assumptions of linear regression, and if any violations might affect reliability.
+
+```{r}
+#| fig-width: 10
+#| fig-height: 10
+#| out-width: 100%
+par(mfrow = c(2, 2))
+
+
+plot(fitted(model1),resid(model1),
+  xlab = "Fitted values",
+  ylab = "Residual values",
+  main = "Model1: Fitted vs Residual Values")
+abline(h=0, col = "red")
+
+plot(fitted(model2),resid(model2),
+  xlab = "Fitted values",
+  ylab = "Residual values",
+  main = "Model2: Fitted vs Residual Values")
+abline(h=0, col = "red")
+
+plot(fitted(model3),resid(model3),
+  xlab = "Fitted values",
+  ylab = "Residual values",
+  main = "Model3: Fitted vs Residual Values")
+abline(h=0, col = "red")
+
+plot(fitted(model4),resid(model4),
+  xlab = "Fitted values",
+  ylab = "Residual values",
+  main = "Model4: Fitted vs Residual Values")
+abline(h=0, col = "red")
+
+
+
+par(mfrow = c(2, 2))
+
+qqnorm(resid(model1), main = "Model1: Normal Q-Q Plot")
+qqnorm(resid(model2), main = "Model2: Normal Q-Q Plot")
+qqnorm(resid(model3), main = "Model3: Normal Q-Q Plot")
+qqnorm(resid(model4), main = "Model4: Normal Q-Q Plot")
+
+```
+
+From the fitted vs residual graphs, we can see that models 3 and 4 violate the homoscedasticity assumption, as the fitted value increase so does the variation of the error terms. Since models 1 and 2 only have one binomial predictor, this assumption is difficult to verify.
+
+The next assumption to check is the normality of the error terms. From the normal Q-Q plots, we can see that for both gross income models, there is a curvature in the line, indicating that the residuals are not normally distributed. The models for attendance—upon brief observation—are straight lines, with slight deviations in the tail, indicating residuals are approximately normally dist
+
+Since there are violations of these assumptions, the models should be used with caution. The models are better suited for insights and future investigations, but should have limited use when predicting attendance and gross income of shows during opening week.
+
+------------------------------------------------------------------------
+
+```{r}
+broadway_years <- broadway |>
+  select(Date.Year, Show.Name, Show.Type, Statistics.Attendance, Statistics.Gross) |>
+  group_by(Date.Year)|>
+  summarise(
+    Attendance.Median = median(Statistics.Attendance, na.rm = TRUE),
+    Gross.Median = median(Statistics.Gross, na.rm = TRUE),
+    N.Observations = n())
+
+knitr::kable(head(broadway_years, 10))
+
+
+p3 <- plot_ly(data=broadway_years, 
+        x=~Date.Year, 
+        y=~Attendance.Median,
+        type = "scatter",
+        mode = "markers+lines",
+        name ="Median Attendance")
+
+p4 <- plot_ly(data=broadway_years, 
+        x=~Date.Year, 
+        y=~Gross.Median,
+        type = "scatter",
+        mode = "markers+lines",
+        name = "Median Gross Income")
+
+subplot(p3, p4, nrows=1, shareY = FALSE, margin=0.10) |>
+    layout(title = "Broadway Shows: Income and Attendance Over 26 Years",
+         xaxis = list(title="Years"),
+         yaxis = list(title="Median Attendance"),
+         yaxis2 = list(title="Median Gross Income ($)"))
+  
+```
+
+Finally, I wanted to also look at how Broadway shows have changed over the years on average. To do so, I looked at the median attendance and gross income of every show each week over the course of the year—medians were used to show averages without inflation from very successful or very unsuccessful runs.
+
+We can see that 1991 was a very successful year on average for both attendance and gross income, followed by a steep decline ending at about 1996. Interestingly, median attendance each week proceeded to hover around 8,000 from 1996 to 2016, while median gross income increased almost back to 1991 levels in the same time. This is just the author's assumption, but, this is most likely due to increases in ticket prices.
+
+------------------------------------------------------------------------
+
+*Sources:*
+
+*"Broadway CSV File"*
+
+From the CORGIS Dataset Project,
+
+by Austin Cory Bar
+
+Added Column *"Theater.Seating.Capacity"* by ChatGPT

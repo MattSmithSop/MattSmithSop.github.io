@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Matthew Smith">
+
+<title>Final Project: Broadway Shows</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Final_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Final_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="Final_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="Final_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="Final_files/libs/quarto-html/popper.min.js"></script>
+<script src="Final_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Final_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Final_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Final_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Final_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Final_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Final_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="Final_files/libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+
+<script src="Final_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+<script src="Final_files/libs/plotly-binding-4.12.1/plotly.js"></script>
+
+<script src="Final_files/libs/typedarray-0.1/typedarray.min.js"></script>
+
+<script src="Final_files/libs/jquery-3.5.1/jquery.min.js"></script>
+
+<link href="Final_files/libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+
+<script src="Final_files/libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+
+<link href="Final_files/libs/plotly-htmlwidgets-css-2.25.2/plotly-htmlwidgets.css" rel="stylesheet">
+
+<script src="Final_files/libs/plotly-main-2.25.2/plotly-latest.min.js"></script>
+
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Final Project: Broadway Shows</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Matthew Smith </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="statistical-observations-on-broadway-shows-1990-2016." class="level1">
+<h1>Statistical Observations on Broadway Shows (1990-2016).</h1>
+<p>For this project, I wanted to analyze and dispaly the success of Broadway shows over the course of 2.5 decades. Specifically I wanted to look at two things:</p>
+<ul>
+<li><p>if show type—straight plays or musicals—had an effect on income and/or attendance in a show’s opening week; and</p></li>
+<li><p>how shows performed on average over the years.</p></li>
+</ul>
+<p>The original data set—<em>Broadway CSV File</em> by Austin Cory Bar—contains information on a Broadway show at the end of each week, such as show type, gross income, attendance, number of performances and capacity.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>broadway_opening <span class="ot">&lt;-</span> broadway <span class="sc">|&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Date.Full, Show.Name, Show.Type, Statistics.Attendance, Statistics.Gross, Statistics.Performances, Theater.Seating.Capacity) <span class="sc">|&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Show.Type <span class="sc">!=</span> <span class="st">"Special"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Date.Full) <span class="sc">|&gt;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(Show.Name, <span class="at">.keep_all=</span><span class="cn">TRUE</span>)<span class="sc">|&gt;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Show.Type.N=</span><span class="fu">if_else</span>(Show.Type <span class="sc">==</span> <span class="st">"Play"</span>,<span class="dv">1</span>,<span class="dv">0</span>))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(broadway_opening, <span class="dv">10</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 18%">
+<col style="width: 6%">
+<col style="width: 14%">
+<col style="width: 11%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 8%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Date.Full</th>
+<th style="text-align: left;">Show.Name</th>
+<th style="text-align: left;">Show.Type</th>
+<th style="text-align: right;">Statistics.Attendance</th>
+<th style="text-align: right;">Statistics.Gross</th>
+<th style="text-align: right;">Statistics.Performances</th>
+<th style="text-align: right;">Theater.Seating.Capacity</th>
+<th style="text-align: right;">Show.Type.N</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1990-08-26</td>
+<td style="text-align: left;">Tru</td>
+<td style="text-align: left;">Play</td>
+<td style="text-align: right;">5500</td>
+<td style="text-align: right;">134456</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">777</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1991-03-24</td>
+<td style="text-align: left;">Miss Saigon</td>
+<td style="text-align: left;">Musical</td>
+<td style="text-align: right;">1737</td>
+<td style="text-align: right;">100647</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1742</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1992-03-22</td>
+<td style="text-align: left;">A Streetcar Named Desire 92</td>
+<td style="text-align: left;">Play</td>
+<td style="text-align: right;">7849</td>
+<td style="text-align: right;">321851</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1055</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1993-03-07</td>
+<td style="text-align: left;">The Sisters Rosensweig</td>
+<td style="text-align: left;">Play</td>
+<td style="text-align: right;">6346</td>
+<td style="text-align: right;">210560</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1055</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1994-03-13</td>
+<td style="text-align: left;">Beauty And The Beast</td>
+<td style="text-align: left;">Musical</td>
+<td style="text-align: right;">9018</td>
+<td style="text-align: right;">410334</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1700</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1994-04-17</td>
+<td style="text-align: left;">Broken Glass</td>
+<td style="text-align: left;">Play</td>
+<td style="text-align: right;">4693</td>
+<td style="text-align: right;">101439</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">777</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1994-09-25</td>
+<td style="text-align: left;">Show Boat</td>
+<td style="text-align: left;">Musical</td>
+<td style="text-align: right;">8580</td>
+<td style="text-align: right;">462220</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1809</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1994-11-06</td>
+<td style="text-align: left;">Sunset Boulevard</td>
+<td style="text-align: left;">Musical</td>
+<td style="text-align: right;">11872</td>
+<td style="text-align: right;">717236</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1689</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1994-11-06</td>
+<td style="text-align: left;">The Shadow Box</td>
+<td style="text-align: left;">Play</td>
+<td style="text-align: right;">2218</td>
+<td style="text-align: right;">45338</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">687</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1995-02-05</td>
+<td style="text-align: left;">Uncle Vanya</td>
+<td style="text-align: left;">Play</td>
+<td style="text-align: right;">1540</td>
+<td style="text-align: right;">31152</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">687</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>To analyze the differences between plays and musicals, I created a sub-data frame entitled <em>“broadway_opening”</em> which looked only at a shows first week. The idea behind this was to see if show type had any impact on performance statistics based on “first impressions”. I also created a new column “Show.Type.N” that codes Plays = 1 &amp; Musicals = 0 to do later analysis.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>broadway_opening <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Show.Type) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean.attendance =</span> <span class="fu">mean</span>(Statistics.Attendance, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean.gross =</span> <span class="fu">mean</span>(Statistics.Gross, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  Show.Type mean.attendance mean.gross
+  &lt;chr&gt;               &lt;dbl&gt;      &lt;dbl&gt;
+1 Musical             5288.    324644.
+2 Play                3471.    198411.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">&lt;-</span><span class="fu">plot_ly</span>(<span class="at">data=</span>broadway_opening,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="sc">~</span>Statistics.Gross, </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="sc">~</span>Show.Type, </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">type=</span><span class="st">"box"</span>, </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="sc">~</span>Show.Type)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>         </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">&lt;-</span><span class="fu">plot_ly</span>(<span class="at">data=</span>broadway_opening,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="sc">~</span>Statistics.Attendance, </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="sc">~</span>Show.Type, </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">type=</span><span class="st">"box"</span>, </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="sc">~</span>Show.Type,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">showlegend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">subplot</span>(p1, p2, <span class="at">nrows=</span><span class="dv">1</span>, <span class="at">shareY =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">layout</span>(<span class="at">title =</span> <span class="st">"Broadway Shows: Income and Attendance"</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">title=</span><span class="st">"Gross Income ($)"</span>),</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">xaxis2 =</span> <span class="fu">list</span>(<span class="at">title=</span><span class="st">"Attendance"</span>),</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">yaxis =</span> <span class="fu">list</span>(<span class="at">title=</span><span class="st">"Show Type"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-756fa85326dc4167e25c" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-756fa85326dc4167e25c">{"x":{"data":[{"fillcolor":"rgba(102,194,165,0.5)","x":[100647,410334,462220,717236,101075,365355,103769,426492,186660,436174,229369,173012,792398,323839,390907,456395,358670,232109,477038,152905,481847,729838,281962,67578,221541,151471,262879,118195,222620,288470,61129,103475,131760,174787,110633,76029,441481,630828,25189,450838,455674,213688,48009,316703,65010,61609,287283,145039,400341,170425,337479,240868,54616,454128,51595,241422,156789,66006,72906,58647,704245,384395,149440,99269,322986,135272,214213,64369,444124,261610,448171,188517,395488,27155,164559,313756,163352,361126,218645,172138,207649,263839,828335,254883,174610,446174,131424,236994,470275,197665,304629,128814,65886,82765,337579,102278,300128,193895,42449,495567,645921,508133,340523,439584,58766,356220,88839,602473,104336,172574,47049,224313,634326,662666,135331,311106,231432,58118,441300,281856,562995,341067,312750,167999,133879,135106,414241,217160,550889,255720,525491,95406,719425,131569,136770,313884,197467,305316,88732,266976,432904,351682,500500,250615,383326,247258,113807,149856,361936,292127,342398,202033,168722,61633,740884,342274,336151,307184,467817,695688,396816,135496,308396,273942,458168,615585,794498,128930,262544,122281,882396,875000,465658,262201,251038,55129,366862,154065,383554,69652,400926,51094,69299,364207,169415,700757,169720,565269,207099,373631,73812,1042713,404387,229602,124188,505671,99456,346029,294664,224754,219116,270161,334409,754236,265727,502367,156387,1192213,169004,568483,190790,472826,97803,281383,174965,225233,633030,594759,200605,162403,460268,657804,381680,284359,73130,291811,588153,87141,332581,131604,268641,265147,35916,298553,292703,370699,525050,1167685,381746,735991,504314,190997,235957,238642,356882,560928,66341,176694,438569,533800,458652,53229,105384,634789,1029883,199935,341454,408245,109750,383543,144461,235823,311467,507431,212261,373672,691812,180871,909159,655710,255813,144194,169792,148964,103586,533382,349563,366136,228661,317918,159823,420879,331484,293768,291270,218509,363874,167410,200392,1288436,448879,144944,608241,970013,928596,690820,490059,364575,227422,206573,640453,365186,425830,263150,190774,603553,424198],"y":["Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical"],"type":"box","orientation":"h","name":"Musical","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"line":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(141,160,203,0.5)","x":[134456,321851,210560,101439,45338,31152,49791,172544,22162,156955,223340,280896,57491,120573,32682,203836,28854,321603,117959,50389,21750,27661,105996,80000,252870,63638,121477,101397,76744,164294,46534,86534,132945,41900,74901,198489,62250,76085,81654,28729,139094,27087,41668,78472,52673,84649,94514,18228,88021,86522,40161,133730,213315,400000,146280,134692,110282,77073,123996,169684,77935,27399,105108,85211,44555,199772,49909,320513,288816,99417,101575,43698,68850,69108,48735,96177,142964,118845,113381,32239,61969,22751,211886,173926,100320,12232,511356,60393,19485,80379,114200,175781,41766,156518,242646,183181,44842,98096,225309,132256,152618,287941,103822,219830,158893,40598,99156,151471,305437,266299,262454,214172,146149,102201,96779,135224,96135,148555,126654,205714,30319,75145,117411,179909,119044,338842,108671,299777,167702,303942,244811,36674,819397,199167,181934,61603,143705,99505,61126,298524,69618,39268,136693,174579,128580,22310,35660,132374,118708,188619,255570,52164,28721,172916,220886,65929,119866,120748,127816,52471,6893,130302,269050,136009,176094,155838,148824,103665,140023,334496,121935,140064,95656,211565,46734,204669,100389,93243,217067,110854,211700,261145,73635,181434,92197,324919,269048,9851,52934,119032,158242,149256,143510,104524,40369,174099,184729,273582,103879,492475,194516,98762,119248,259565,241812,143286,545149,97848,235965,105473,179011,245670,194442,95772,117381,146176,148966,44132,237903,31790,107270,875815,55716,35634,208510,144400,119574,284991,60685,70594,201085,988198,114085,211041,479868,130711,155784,146539,55065,101064,242667,280898,114507,309000,119161,80140,88868,166859,373164,355133,400224,52085,145912,210256,62832,81531,113423,93124,141710,146469,344031,138108,190545,198575,97663,91379,34151,172954,266490,87185,113696,678306,176719,203468,87613,79175,81063,138652,271604,141040,478235,369609,134559,180553,109674,124431,72190,185209,246337,323955,118607,59699,126011,185991,38297,78336,146353,204485,145549,96012,119727,199120,767663,236145,98091,187238,148558,232375,39755,283245,56201,519352,601729,88615,204010,122265,94462,102609,413686,190491,117328,60294,213010,703724,134547,123695,189291,344287,217164,89427,365275,89433,60699,1060015,608450,155419,71928,265719,407442,74305,384100,409304,271872,653919,58791,137391,90736,485320,130853,179263,98634,716252,411044,305443,334839,157454,143850,51250,204970,80118,121813,613569,614511,315525,127931,233486,110317,143579,309488,262614,159476,48615,305770,158664,103184,219944,190160,151328,703775,187397,310468,88644,379862,101587,163000,843215,262436,367156,349270,305840,109183,105646,199627,659391,191134,161233,313705,92285,207375,318952,88627,54952,1100818,200041,468429,196181,202787,1067922,70446,116334,128209,770789,29638,151179,253222,152704,688832,337951,155775,135307,155234,365614,793046,519102,54749,198383,288614,100824,264607,884596,348102,520087,325875,993940,331101,305345,36122,253369,419780,90799,126172,477703,177278,233302,321528,124200,227826,85080,274654,1072111,622939,206490,113194,32574,156916,330298,400315,475357,163744,210547,66284,122461],"y":["Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play"],"type":"box","orientation":"h","name":"Play","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"line":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(102,194,165,0.5)","x":[1737,9018,8580,11872,5774,8443,4973,8197,4537,10327,6007,3493,12895,9049,7317,9241,8562,5962,9560,3526,9865,13080,6060,3203,5377,7100,6342,3496,4188,6246,1416,3163,3484,3986,3971,1853,11648,10645,2438,8337,7235,3443,863,9039,2545,1204,7444,2794,13189,5277,6106,3465,1334,10527,1460,5311,5410,1543,2156,1999,12900,7479,3860,1855,10844,1035,4818,2323,7799,3994,7702,3901,8377,465,4152,7090,2873,7766,4441,4828,3578,6542,11153,8774,4699,11427,2584,5311,5984,3604,5452,1671,1708,943,10047,1256,5427,4101,1093,7541,8838,8099,5092,6115,1005,3921,2068,8228,2716,5389,847,4585,8239,10519,2129,5285,2816,1337,5841,5479,9054,6026,6071,3664,2636,2542,6227,3966,8263,3901,8320,1692,9597,3266,1804,6138,2722,3888,1954,4486,6681,4472,8665,3982,4130,5011,1571,2630,4801,4725,9930,4537,2231,1149,7682,6892,5109,3461,10971,7190,5926,2710,5438,5131,6266,10735,12683,2163,5272,2572,8546,6952,10255,3008,4656,1189,6666,1999,6242,1611,5742,2298,1490,6076,3524,6640,1632,6862,3614,5719,2066,11222,6084,5805,2435,9661,2016,5109,7605,4915,5037,5609,4779,5859,4731,8817,2622,10492,2574,6564,1747,7152,5168,5809,3590,3653,9143,9190,1923,1426,4195,10603,5050,3826,1060,4462,12103,2688,6921,1510,3769,4431,921,2546,2564,5060,7726,9282,4951,7194,5160,7441,5059,7470,5996,7247,1199,4297,6502,10229,4426,920,1424,8228,10554,1974,4513,7817,2990,5520,1856,2968,4893,4359,2783,3905,8600,1408,8502,9050,2694,1016,2805,6182,1759,6779,5696,5288,2857,3161,1510,4188,4291,5110,3935,2822,10307,3582,3481,9273,6802,2583,7549,10048,10685,6186,5099,6534,3233,3238,5660,4056,3171,4242,1897,5135,6650],"y":["Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical","Musical"],"showlegend":false,"type":"box","orientation":"h","name":"Musical","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"line":{"color":"rgba(102,194,165,1)"},"xaxis":"x2","yaxis":"y","frame":null},{"fillcolor":"rgba(141,160,203,0.5)","x":[5500,7849,6346,4693,2218,1540,2105,3408,1149,3992,5644,6549,2343,4154,1240,8376,1214,6550,3815,2355,968,1120,2790,4000,6649,2006,5652,4725,2810,4796,2323,2840,2421,1258,3474,6777,3210,3502,2821,1323,3489,1710,1450,2570,2153,3703,3221,707,3868,2371,1277,4251,6160,6500,5676,3679,3225,2064,5868,4356,3143,668,4526,2719,1772,4041,2205,6652,5546,3029,3120,1735,2487,2515,1914,3311,3159,2540,4041,828,1346,1003,5218,5048,2140,462,6974,2778,800,2564,3997,5525,1750,3275,3839,4119,1901,2207,4947,4400,4186,7140,3580,5183,4046,1251,2157,3260,7629,7092,5977,4809,3170,1896,2010,4060,3067,2583,2967,6558,984,2093,2621,4642,3363,7519,3153,6118,3142,8242,7342,1036,12005,4531,2420,1542,2719,2527,1992,5116,2286,1364,3966,2996,3110,772,1154,2733,3428,5006,4300,2047,647,2964,3624,3767,2972,2366,2794,1679,3305,3109,4972,3548,2812,1907,3808,1644,2697,4370,3569,2741,2396,4812,1340,4855,2570,2762,4766,2448,4072,5497,1468,2650,2415,5573,6298,303,1388,2536,3131,2997,2883,2631,908,3696,2757,4764,2250,4682,4113,2427,2674,4146,4299,2297,6732,1750,4351,1766,3564,4075,3726,2271,2496,4697,2806,2264,4726,621,2444,8656,1502,889,3928,2744,2479,4711,1549,1889,3915,8678,2247,2978,6110,2697,3287,3233,1152,2241,2971,5671,2782,3851,2555,1758,2057,3689,4413,4821,4500,971,2809,4370,1742,1857,2157,2174,2655,2623,3731,1985,3250,4652,2429,1999,806,3389,4082,1771,2356,8191,2098,2580,1895,1355,1581,2976,2264,2804,5138,6043,2681,3217,2454,2382,1524,4241,4154,4857,1635,809,1874,4093,1035,2175,3205,3688,2925,1852,2600,4127,5355,2084,3512,4961,3633,5417,1340,5185,1710,7204,7116,2258,3919,2030,2190,3219,6876,3014,2833,1454,3440,6338,3230,3175,3841,5809,4455,1748,2930,1626,1599,7944,5908,4591,2069,4669,4790,948,4855,4521,4776,7467,1927,3279,1474,6319,5623,3512,2246,8302,4627,6365,4464,2754,2004,834,3957,2268,2526,5709,6785,5723,3645,5902,2741,3624,6569,3656,3055,2871,4698,3446,2704,2892,3347,1789,4279,4383,4188,1927,4723,2686,3639,8194,4826,2397,6122,5582,2474,2799,2795,8065,3991,1948,2345,876,2390,3847,2362,776,7371,3691,6129,2718,1986,8214,2012,2078,1692,8188,485,1046,2841,2648,6153,4006,3446,3386,2133,5772,5402,7929,1375,3704,3801,1583,3362,6416,2162,3182,3953,7590,2161,5981,768,2406,4212,2619,3977,3702,3155,3175,4701,1531,3325,959,4224,6444,4627,3049,2591,500,1865,5200,5461,4881,3094,2809,700,1413],"y":["Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play","Play"],"showlegend":false,"type":"box","orientation":"h","name":"Play","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"line":{"color":"rgba(141,160,203,1)"},"xaxis":"x2","yaxis":"y","frame":null}],"layout":{"xaxis":{"domain":[0,0.47999999999999998],"automargin":true,"anchor":"y","title":"Gross Income ($)"},"xaxis2":{"domain":[0.52000000000000002,1],"automargin":true,"anchor":"y","title":"Attendance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Show Type","type":"category","categoryorder":"array","categoryarray":["Musical","Play"],"anchor":"x"},"annotations":[],"shapes":[],"images":[],"margin":{"b":40,"l":60,"t":25,"r":10},"hovermode":"closest","showlegend":true,"title":"Broadway Shows: Income and Attendance"},"attrs":{"2b2826e1481":{"x":{},"y":{},"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"box"},"2b28457561ce":{"x":{},"y":{},"showlegend":false,"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"box"}},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"subplot":true,"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Using this new data set, I created two box-plots. From this, we can see that on average, musicals perform better than plays in regards to both gross income and attendance. Specifically, musical mean-attendance and mean gross-income is 52.32% and 63.62% greater than plays respectively.</p>
+<p>It’s interesting to note, that plays typically have less deviation from their average than musicals do, as shown by the narrower boxes (or interquartile-ranges) of the plays in both graphs. Indicating that musicals are more volatile to other factors possibly like ticket price, genre, and composer.</p>
+<p>With these differences in mind, I next wanted to see if show type could predict the success of a show.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Statistics.Attendance<span class="sc">~</span>Show.Type.N,<span class="at">data =</span> broadway_opening)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Statistics.Attendance ~ Show.Type.N, data = broadway_opening)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4822.9 -1557.5  -329.5  1254.1  8533.5 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   5287.9      133.2   39.71   &lt;2e-16 ***
+Show.Type.N  -1816.4      171.8  -10.57   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2333 on 767 degrees of freedom
+Multiple R-squared:  0.1272,    Adjusted R-squared:  0.126 
+F-statistic: 111.8 on 1 and 767 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span><span class="fu">lm</span>(Statistics.Gross<span class="sc">~</span>Show.Type.N,<span class="at">data =</span> broadway_opening)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Statistics.Gross ~ Show.Type.N, data = broadway_opening)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-299455 -122326  -52862   66263  963792 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   324644      11353  28.596   &lt;2e-16 ***
+Show.Type.N  -126234      14647  -8.618   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 198900 on 767 degrees of freedom
+Multiple R-squared:  0.08829,   Adjusted R-squared:  0.0871 
+F-statistic: 74.28 on 1 and 767 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>To do this, I created two linear models with <em>“Show.Type.N”</em> as a predictor for both gross income and attendance.</p>
+<p>The first model estimates that average attendance of a Broadway play is going to have 1816.4 visitors fewer than a Broadway musical during opening week. With a p-value below 0.01, the difference is statistically significant, indicating association between attendance and show type.</p>
+<p>The second model estimates that average gross income of a Broadway play is $126,234 than that of a musical—estimated at $324,644 during opening week. Similarly, the significant p-value provides evidence of an association between show type and gross income.</p>
+<p>However, while there may be statistically significant evidence to support association between show type and the two response variables, the models have poor explanatory power. Model 1 has an R<sup>2</sup> value of 0.1272, meaning the model only explains 12.72% of the variation in attendance. Model 2 has an even lower R<sup>2</sup> value, 0.08829, explaining only 8.829% of the variation in gross income. With low R-squared values, there is most likely another—or multiple other—variables that contribute to a shows success.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Statistics.Attendance<span class="sc">~</span>Show.Type.N <span class="sc">+</span> Theater.Seating.Capacity <span class="sc">+</span> Statistics.Performances,<span class="at">data =</span> broadway_opening)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Statistics.Attendance ~ Show.Type.N + Theater.Seating.Capacity + 
+    Statistics.Performances, data = broadway_opening)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-6186.3 -1331.1   -90.8  1258.9  6467.8 
+
+Coefficients:
+                          Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)               281.3450   373.6808   0.753   0.4517    
+Show.Type.N              -404.6249   181.5054  -2.229   0.0261 *  
+Theater.Seating.Capacity    3.8364     0.2769  13.857  &lt; 2e-16 ***
+Statistics.Performances   260.7244    54.9991   4.741 2.54e-06 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2057 on 765 degrees of freedom
+Multiple R-squared:  0.3234,    Adjusted R-squared:  0.3207 
+F-statistic: 121.9 on 3 and 765 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>model4 <span class="ot">&lt;-</span><span class="fu">lm</span>(Statistics.Gross<span class="sc">~</span>Show.Type.N <span class="sc">+</span> Theater.Seating.Capacity <span class="sc">+</span> Statistics.Performances,<span class="at">data =</span> broadway_opening)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model4)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Statistics.Gross ~ Show.Type.N + Theater.Seating.Capacity + 
+    Statistics.Performances, data = broadway_opening)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-383275 -108294  -33362   49134  950832 
+
+Coefficients:
+                          Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)              -29227.98   33546.53  -0.871    0.384    
+Show.Type.N              -26473.43   16294.33  -1.625    0.105    
+Theater.Seating.Capacity    274.37      24.85  11.039   &lt;2e-16 ***
+Statistics.Performances    5669.88    4937.45   1.148    0.251    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 184700 on 765 degrees of freedom
+Multiple R-squared:  0.2162,    Adjusted R-squared:  0.2131 
+F-statistic: 70.33 on 3 and 765 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>Since show type alone is not a strong predictor of attendance nor gross income, I then wanted to see if adding some other variables from the data set would improve the predicting power of the models. Specifically I used the theaters seating capacity as well as the number of performances during opening week.</p>
+<p>Interestingly, adding these other predictors increases the p-value of <em>“Show.Type”</em>, so much so, that at the 0.01 significance level, there is no longer sufficient evidence to support an association between show type and both response variables.</p>
+<p>It’s also worth noting that at the 0.01 significance level, there does not exist sufficient evidence to support association between the number of performances and gross income.</p>
+<p>Once again, the R-squared—in this case, multiple R-squared—for both models is relatively low at 0.3234 and 0.2162 respectively.</p>
+<p>I next wanted to see whether the regression models satisfied the assumptions of linear regression, and if any violations might affect reliability.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">fitted</span>(model1),<span class="fu">resid</span>(model1),</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Fitted values"</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Residual values"</span>,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Model1: Fitted vs Residual Values"</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">fitted</span>(model2),<span class="fu">resid</span>(model2),</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Fitted values"</span>,</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Residual values"</span>,</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Model2: Fitted vs Residual Values"</span>)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">fitted</span>(model3),<span class="fu">resid</span>(model3),</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Fitted values"</span>,</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Residual values"</span>,</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Model3: Fitted vs Residual Values"</span>)</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">fitted</span>(model4),<span class="fu">resid</span>(model4),</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Fitted values"</span>,</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Residual values"</span>,</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Model4: Fitted vs Residual Values"</span>)</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Final_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(<span class="fu">resid</span>(model1), <span class="at">main =</span> <span class="st">"Model1: Normal Q-Q Plot"</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(<span class="fu">resid</span>(model2), <span class="at">main =</span> <span class="st">"Model2: Normal Q-Q Plot"</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(<span class="fu">resid</span>(model3), <span class="at">main =</span> <span class="st">"Model3: Normal Q-Q Plot"</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(<span class="fu">resid</span>(model4), <span class="at">main =</span> <span class="st">"Model4: Normal Q-Q Plot"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Final_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>From the fitted vs residual graphs, we can see that models 3 and 4 violate the homoscedasticity assumption, as the fitted value increase so does the variation of the error terms. Since models 1 and 2 only have one binomial predictor, this assumption is difficult to verify.</p>
+<p>The next assumption to check is the normality of the error terms. From the normal Q-Q plots, we can see that for both gross income models, there is a curvature in the line, indicating that the residuals are not normally distributed. The models for attendance—upon brief observation—are straight lines, with slight deviations in the tail, indicating residuals are approximately normally dist</p>
+<p>Since there are violations of these assumptions, the models should be used with caution. The models are better suited for insights and future investigations, but should have limited use when predicting attendance and gross income of shows during opening week.</p>
+<hr>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>broadway_years <span class="ot">&lt;-</span> broadway <span class="sc">|&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Date.Year, Show.Name, Show.Type, Statistics.Attendance, Statistics.Gross) <span class="sc">|&gt;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Date.Year)<span class="sc">|&gt;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Attendance.Median =</span> <span class="fu">median</span>(Statistics.Attendance, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Gross.Median =</span> <span class="fu">median</span>(Statistics.Gross, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">N.Observations =</span> <span class="fu">n</span>())</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(broadway_years, <span class="dv">10</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Date.Year</th>
+<th style="text-align: right;">Attendance.Median</th>
+<th style="text-align: right;">Gross.Median</th>
+<th style="text-align: right;">N.Observations</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1990</td>
+<td style="text-align: right;">5500.0</td>
+<td style="text-align: right;">134456</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1991</td>
+<td style="text-align: right;">14088.0</td>
+<td style="text-align: right;">778474</td>
+<td style="text-align: right;">41</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1992</td>
+<td style="text-align: right;">13447.0</td>
+<td style="text-align: right;">681526</td>
+<td style="text-align: right;">73</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1993</td>
+<td style="text-align: right;">12016.0</td>
+<td style="text-align: right;">565549</td>
+<td style="text-align: right;">95</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1994</td>
+<td style="text-align: right;">12762.0</td>
+<td style="text-align: right;">569929</td>
+<td style="text-align: right;">167</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1995</td>
+<td style="text-align: right;">11298.0</td>
+<td style="text-align: right;">498017</td>
+<td style="text-align: right;">411</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1996</td>
+<td style="text-align: right;">8201.0</td>
+<td style="text-align: right;">383844</td>
+<td style="text-align: right;">943</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1997</td>
+<td style="text-align: right;">7914.5</td>
+<td style="text-align: right;">378446</td>
+<td style="text-align: right;">1340</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1998</td>
+<td style="text-align: right;">7950.0</td>
+<td style="text-align: right;">375979</td>
+<td style="text-align: right;">1441</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1999</td>
+<td style="text-align: right;">7679.5</td>
+<td style="text-align: right;">405007</td>
+<td style="text-align: right;">1466</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(<span class="at">data=</span>broadway_years, </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">x=</span><span class="sc">~</span>Date.Year, </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">y=</span><span class="sc">~</span>Attendance.Median,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">type =</span> <span class="st">"scatter"</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">mode =</span> <span class="st">"markers+lines"</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">name =</span><span class="st">"Median Attendance"</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(<span class="at">data=</span>broadway_years, </span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">x=</span><span class="sc">~</span>Date.Year, </span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">y=</span><span class="sc">~</span>Gross.Median,</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">type =</span> <span class="st">"scatter"</span>,</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">mode =</span> <span class="st">"markers+lines"</span>,</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">name =</span> <span class="st">"Median Gross Income"</span>)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="fu">subplot</span>(p3, p4, <span class="at">nrows=</span><span class="dv">1</span>, <span class="at">shareY =</span> <span class="cn">FALSE</span>, <span class="at">margin=</span><span class="fl">0.10</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">layout</span>(<span class="at">title =</span> <span class="st">"Broadway Shows: Income and Attendance Over 26 Years"</span>,</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">title=</span><span class="st">"Years"</span>),</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">yaxis =</span> <span class="fu">list</span>(<span class="at">title=</span><span class="st">"Median Attendance"</span>),</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">yaxis2 =</span> <span class="fu">list</span>(<span class="at">title=</span><span class="st">"Median Gross Income ($)"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-5e9457cc30699fb2d1e3" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-5e9457cc30699fb2d1e3">{"x":{"data":[{"x":[1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016],"y":[5500,14088,13447,12016,12762,11298,8201,7914.5,7950,7679.5,7984.5,7269.5,7019.5,7644,7520,7465.5,8132.5,7694,7513.5,8051,7264,8277.5,7781,8161,7786,7709,7687],"mode":"markers+lines","name":"Median Attendance","type":"scatter","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016],"y":[134456,778474,681526,565549,569929,498017,383844,378446,375979,405007,425730.5,391849,390269.5,480317.5,474449.5,485026,561821.5,551288,524976,636437,581801,679356,638932,777646,753347,749863,694020],"mode":"markers+lines","name":"Median Gross Income","type":"scatter","marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"xaxis":"x2","yaxis":"y2","frame":null}],"layout":{"xaxis":{"domain":[0,0.40000000000000002],"automargin":true,"anchor":"y","title":"Years"},"xaxis2":{"domain":[0.59999999999999998,1],"automargin":true,"anchor":"y2"},"yaxis2":{"domain":[0,1],"automargin":true,"anchor":"x2","title":"Median Gross Income ($)"},"yaxis":{"domain":[0,1],"automargin":true,"anchor":"x","title":"Median Attendance"},"annotations":[],"shapes":[],"images":[],"margin":{"b":40,"l":60,"t":25,"r":10},"hovermode":"closest","showlegend":true,"title":"Broadway Shows: Income and Attendance Over 26 Years"},"attrs":{"2b284a1943a6":{"x":{},"y":{},"mode":"markers+lines","name":"Median Attendance","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"},"2b2820e34b2f":{"x":{},"y":{},"mode":"markers+lines","name":"Median Gross Income","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"subplot":true,"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Finally, I wanted to also look at how Broadway shows have changed over the years on average. To do so, I looked at the median attendance and gross income of every show each week over the course of the year—medians were used to show averages without inflation from very successful or very unsuccessful runs.</p>
+<p>We can see that 1991 was a very successful year on average for both attendance and gross income, followed by a steep decline ending at about 1996. Interestingly, median attendance each week proceeded to hover around 8,000 from 1996 to 2016, while median gross income increased almost back to 1991 levels in the same time. This is just the author’s assumption, but, this is most likely due to increases in ticket prices.</p>
+<hr>
+<p><em>Sources:</em></p>
+<p><em>“Broadway CSV File”</em></p>
+<p>From the CORGIS Dataset Project,</p>
+<p>by Austin Cory Bar</p>
+<p>Added Column <em>“Theater.Seating.Capacity”</em> by ChatGPT</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
